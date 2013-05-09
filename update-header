@@ -1,0 +1,61 @@
+#!/usr/bin/python
+#
+# update-header - Updates the header comment in source files
+# Copyright (C) 2013  Lorenzo Villani
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+import argparse
+import os
+import os.path
+import shutil
+import sys
+import tempfile
+
+import updateheader
+
+
+def main():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('header', nargs=1)
+    arg_parser.add_argument('files', nargs='+')
+
+    args = arg_parser.parse_args()
+
+    # Open the header
+    header_path = args.header[0]
+
+    if not os.path.isfile(header_path):
+        print "%s: No such file." % header_path
+        sys.exit(1)
+
+    header_stream = open(header_path, 'r')
+
+    # Process files
+    for file_name in args.files:
+        if not os.path.isfile(file_name):
+            print "%s: No such file." % file_name
+            sys.exit(1)
+
+        input_stream = open(file_name, 'r')
+        input_stat = os.stat(file_name)
+        output_stream = tempfile.NamedTemporaryFile(mode='w')
+
+        updateheader.update_header(input_stream, header_stream, output_stream)
+        shutil.copyfile(output_stream.name, file_name)
+        os.chmod(file_name, input_stat.st_mode)
+
+if __name__ == '__main__':
+    main()
