@@ -19,7 +19,13 @@
 
 import updateheader
 import unittest
-import StringIO
+
+try:
+    # Python 2.x
+    from StringIO import StringIO
+except ImportError:
+    # Python 3.x
+    from io import StringIO
 
 
 #
@@ -38,9 +44,9 @@ class TestUpdateHeader(unittest.TestCase):
         self.t(EXISTING_HEADER_OUTPUT, EXISTING_HEADER)
 
     def t(self, expected, input_string):
-        input_stream = StringIO.StringIO(input_string)
-        header_stream = StringIO.StringIO(HEADER)
-        output_stream = StringIO.StringIO()
+        input_stream = StringIO(input_string)
+        header_stream = StringIO(HEADER)
+        output_stream = StringIO()
 
         updateheader.update_header(input_stream, header_stream, output_stream)
 
