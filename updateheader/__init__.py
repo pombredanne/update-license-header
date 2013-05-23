@@ -63,13 +63,12 @@ def update_header(input_stream, new_header, output_stream, comment_string="#"):
             if not line.startswith(comment_string):
                 inject_header(new_header, output_stream, comment_string)
                 output_stream.write(line)
-
-            state = State.Done
+                state = State.Done
         elif state == State.Done:
             # Copy input to output verbatim
             output_stream.write(line)
     else:
-        if state == State.Start:
+        if state == State.Start or state == State.FoundHeaderStart:
             # Input is empty, inject the header and be done with it
             inject_header(new_header, output_stream, comment_string)
 

@@ -40,6 +40,17 @@ SHEBANG_OUTPUT = """#!/usr/bin/python
 #
 # Copyright (c) 2013 Lorenzo Villani"""
 
+EXISTING_HEADER = """#!/usr/bin/python
+#
+# old_test - An old test header
+#
+# Copyright (c) 2013 Lorenzo Villani"""
+EXISTING_HEADER_OUTPUT = """#!/usr/bin/python
+#
+# test - A test program
+#
+# Copyright (c) 2013 Lorenzo Villani"""
+
 
 class TestUpdateHeader(unittest.TestCase):
 
@@ -48,6 +59,9 @@ class TestUpdateHeader(unittest.TestCase):
 
     def test_shebang_input(self):
         self.t(SHEBANG_OUTPUT, SHEBANG)
+
+    def test_existing_header(self):
+        self.t(EXISTING_HEADER_OUTPUT, EXISTING_HEADER)
 
     def t(self, expected, input_string):
         input_stream = StringIO.StringIO(input_string)
