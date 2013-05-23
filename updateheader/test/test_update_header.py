@@ -21,36 +21,10 @@ import updateheader
 import unittest
 import StringIO
 
-HEADER = """
-test - A test program
 
-Copyright (c) 2013 Lorenzo Villani"""
-
-EMPTY = ""
-EMPTY_OUTPUT = """#
-# test - A test program
 #
-# Copyright (c) 2013 Lorenzo Villani"""
-
-SHEBANG = """#!/usr/bin/python
-"""
-SHEBANG_OUTPUT = """#!/usr/bin/python
+# Test case
 #
-# test - A test program
-#
-# Copyright (c) 2013 Lorenzo Villani"""
-
-EXISTING_HEADER = """#!/usr/bin/python
-#
-# old_test - An old test header
-#
-# Copyright (c) 2013 Lorenzo Villani"""
-EXISTING_HEADER_OUTPUT = """#!/usr/bin/python
-#
-# test - A test program
-#
-# Copyright (c) 2013 Lorenzo Villani"""
-
 
 class TestUpdateHeader(unittest.TestCase):
 
@@ -71,3 +45,44 @@ class TestUpdateHeader(unittest.TestCase):
         updateheader.update_header(input_stream, header_stream, output_stream)
 
         self.assertEqual(expected, output_stream.getvalue())
+
+
+#
+# Test inputs/outputs
+#
+
+HEADER = """
+test - A test program
+
+Copyright (c) 2013 Lorenzo Villani"""
+
+# ---------------------------------------------
+
+EMPTY = ""
+EMPTY_OUTPUT = """#
+# test - A test program
+#
+# Copyright (c) 2013 Lorenzo Villani"""
+
+# ---------------------------------------------
+
+SHEBANG = """#!/usr/bin/python
+"""
+SHEBANG_OUTPUT = """#!/usr/bin/python
+#
+# test - A test program
+#
+# Copyright (c) 2013 Lorenzo Villani"""
+
+# ---------------------------------------------
+
+EXISTING_HEADER = """#!/usr/bin/python
+#
+# old_test - An old test header
+#
+# Copyright (c) 2013 Lorenzo Villani"""
+EXISTING_HEADER_OUTPUT = """#!/usr/bin/python
+#
+# test - A test program
+#
+# Copyright (c) 2013 Lorenzo Villani"""

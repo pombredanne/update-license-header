@@ -21,7 +21,6 @@ def update_header(input_stream, new_header, output_stream, comment_string="#"):
     """
     Replaces or inserts a new header in a file.
 
-
     @param input_stream: The input file with the old (or missing) header.
     @type input_stream: file
 
@@ -80,7 +79,6 @@ def update_header(input_stream, new_header, output_stream, comment_string="#"):
 def inject_header(header_stream, output_stream, comment_string):
     """
     Writes the header onto the output stream.
-
 
     @param header_stream: Input stream for the header. A seek to the beginning
         of the file is performed with every call.
