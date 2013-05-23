@@ -1,0 +1,5 @@
+#
+# Use with pip install -r requirements.txt
+#
+
+nose==1.3.0
