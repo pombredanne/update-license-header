@@ -42,7 +42,7 @@ def main():
         print "%s: No such file." % header_path
         sys.exit(1)
 
-    header_stream = open(header_path, 'r')
+    header_stream = open(header_path, "r")
 
     # Process files
     for file_name in args.files:
@@ -50,14 +50,14 @@ def main():
             print "%s: No such file." % file_name
             sys.exit(1)
 
-        input_stream = open(file_name, 'r')
+        input_stream = open(file_name, "r")
         input_stat = os.stat(file_name)
-        output_stream = tempfile.NamedTemporaryFile(mode='w')
+        output_stream = tempfile.NamedTemporaryFile(mode="w")
 
         updateheader.update_header(
             input_stream, header_stream, output_stream, comment_string=args.comment_string)
         shutil.copyfile(output_stream.name, file_name)
         os.chmod(file_name, input_stat.st_mode)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
