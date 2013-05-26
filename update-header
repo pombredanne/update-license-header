@@ -29,8 +29,9 @@ import updateheader
 
 def main():
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('header', nargs=1)
-    arg_parser.add_argument('files', nargs='+')
+    arg_parser.add_argument("-c", "--comment-string", type=str, default="#")
+    arg_parser.add_argument("header", nargs=1)
+    arg_parser.add_argument("files", nargs="+")
 
     args = arg_parser.parse_args()
 
@@ -53,7 +54,8 @@ def main():
         input_stat = os.stat(file_name)
         output_stream = tempfile.NamedTemporaryFile(mode='w')
 
-        updateheader.update_header(input_stream, header_stream, output_stream)
+        updateheader.update_header(
+            input_stream, header_stream, output_stream, comment_string=args.comment_string)
         shutil.copyfile(output_stream.name, file_name)
         os.chmod(file_name, input_stat.st_mode)
 
