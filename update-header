@@ -17,47 +17,88 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import argparse
-import os
-import os.path
-import shutil
-import sys
-import tempfile
+from argparse import ArgumentParser
+from functools import partial
+from os import chmod, stat
+from os.path import isdir, isfile, join, splitext, walk
+from shutil import copyfile
+from tempfile import NamedTemporaryFile
 
-import updateheader
+from updateheader import update_header
+
+
+# File extension -> comment string
+COMMENT_STRING = {
+    ".c":    "//",
+    ".el":   ";;;;",
+    ".java": "//",
+    ".py":   "#",
+}
+
+# Aliases
+COMMENT_STRING[".cpp"] = COMMENT_STRING[".c"]
+COMMENT_STRING[".h"] = COMMENT_STRING[".c"]
+COMMENT_STRING[".hpp"] = COMMENT_STRING[".cpp"]
 
 
 def main():
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("-c", "--comment-string", type=str, default="#")
+    # Parse command line
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument("-c", "--comment-string", default="#")
     arg_parser.add_argument("header", nargs=1)
-    arg_parser.add_argument("files", nargs="+")
+    arg_parser.add_argument("path", nargs="+")
 
     args = arg_parser.parse_args()
 
-    # Open the header
-    header_path = args.header[0]
+    # Input stream for the header boilerplate
+    header = open(args.header[0], "r")
 
-    if not os.path.isfile(header_path):
-        print "%s: No such file." % header_path
-        sys.exit(1)
+    # Process files and directories
+    for path in args.path:
+        if isfile(path):
+            update_file(path, header, args.comment_string)
+        elif isdir(path):
+            update_directory(path, header, args.comment_string)
 
-    header_stream = open(header_path, "r")
 
-    # Process files
-    for file_name in args.files:
-        if not os.path.isfile(file_name):
-            print "%s: No such file." % file_name
-            sys.exit(1)
+def update_file(path, header, comment_string):
+    """
+    Updates the header boilerplate for a single file.
 
-        input_stream = open(file_name, "r")
-        input_stat = os.stat(file_name)
-        output_stream = tempfile.NamedTemporaryFile(mode="w")
+    :param path: A file path.
+    """
+    original_stat = stat(path)
+    input_stream = open(path, "r")
+    tempfile = NamedTemporaryFile(mode="w")
 
-        updateheader.update_header(
-            input_stream, header_stream, output_stream, comment_string=args.comment_string)
-        shutil.copyfile(output_stream.name, file_name)
-        os.chmod(file_name, input_stat.st_mode)
+    update_header(input_stream, header, tempfile, comment_string)
+    tempfile.flush()
+
+    copyfile(tempfile.name, path)
+    chmod(path, original_stat.st_mode)
+
+
+def update_directory(path, header, comment_string):
+    """
+    Recursively updates the header boilerplate for all recognized files below
+    the specified directory.
+
+    :param path: A directory path.
+    """
+    def is_recognized(entry):
+        return isfile(entry) and splitext(entry)[1] in COMMENT_STRING
+
+    def visit(_, directory, files):
+        entries = map(partial(join, directory), files)
+        applicable = filter(is_recognized, entries)
+
+        for path in applicable:
+            ext = splitext(path)[1]
+
+            update_file(path, header, COMMENT_STRING[ext])
+
+    walk(path, visit, None)
+
 
 if __name__ == "__main__":
     main()
