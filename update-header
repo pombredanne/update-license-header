@@ -29,16 +29,23 @@ from updateheader import update_header
 
 # File extension -> comment string
 COMMENT_STRING = {
-    ".c":    "//",
-    ".el":   ";;;;",
-    ".java": "//",
-    ".py":   "#",
+    ".c":     "//",
+    ".cc":    "//",
+    ".cpp":   "//",
+    ".el":    ";;;;",
+    ".h":     "//",
+    ".hh":    "//",
+    ".hpp":   "//",
+    ".hs":    "--",
+    ".java":  "//",
+    ".js":    "//",
+    ".li":    ";;;;",
+    ".m":     "//",
+    ".mm":    "//",
+    ".py":    "#",
+    ".swift": "//",
+    ".yml":   "#",
 }
-
-# Aliases
-COMMENT_STRING[".cpp"] = COMMENT_STRING[".c"]
-COMMENT_STRING[".h"] = COMMENT_STRING[".c"]
-COMMENT_STRING[".hpp"] = COMMENT_STRING[".cpp"]
 
 
 def main():
