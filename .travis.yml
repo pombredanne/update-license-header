@@ -1,5 +1,9 @@
+sudo: false
 language: python
 python:
     - "2.7"
     - "3.4"
-script: nosetests
+script:
+  - py.test --cov positronic
+after_success:
+  - coveralls --verbose
