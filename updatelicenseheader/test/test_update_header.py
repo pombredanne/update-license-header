@@ -16,8 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
-import updateheader
 import unittest
 
 try:
@@ -26,6 +24,9 @@ try:
 except ImportError:
     # Python 3.x
     from io import StringIO
+
+
+from .. import update_header
 
 
 #
@@ -48,7 +49,7 @@ class TestUpdateHeader(unittest.TestCase):
         header_stream = StringIO(HEADER)
         output_stream = StringIO()
 
-        updateheader.update_header(input_stream, header_stream, output_stream)
+        update_header(input_stream, header_stream, output_stream)
 
         self.assertEqual(expected, output_stream.getvalue())
 

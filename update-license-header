@@ -24,7 +24,7 @@ from os.path import isdir, isfile, join, splitext, walk
 from shutil import copyfile
 from tempfile import NamedTemporaryFile
 
-from updateheader import update_header
+from updatelicenseheader import update_header
 
 
 # File extension -> comment string
