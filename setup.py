@@ -19,8 +19,8 @@
 
 from distutils.core import setup
 
-setup(name="updateheaders",
+setup(name="update-license-header",
       version="1.0.0",
       packages=["updateheader"],
-      scripts=["update-header"],
+      scripts=["update-license-header"],
       )
