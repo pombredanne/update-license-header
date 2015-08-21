@@ -1,7 +1,7 @@
-# update-header
+# update-license-header
 
-[![Build Status](http://img.shields.io/travis/lvillani/update-header.svg?style=flat)](https://travis-ci.org/lvillani/update-header)
-[![Coverage Status](http://img.shields.io/coveralls/lvillani/update-header.svg?style=flat)](https://coveralls.io/r/lvillani/update-header)
+[![Build Status](http://img.shields.io/travis/lvillani/update-license-header.svg?style=flat)](https://travis-ci.org/lvillani/update-license-header)
+[![Coverage Status](http://img.shields.io/coveralls/lvillani/update-license-header.svg?style=flat)](https://coveralls.io/r/lvillani/update-license-header)
 [![License](http://img.shields.io/badge/license-GPL%20v3.0-blue.svg?style=flat)](http://choosealicense.com/licenses/gpl-3.0/)
 
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ files are ignored.
 If `path` refers to a file, it is processed using the specified header and either the default
 comment string (`"#"`) or whichever one has been specified on the command line.
 
-    usage: update-header [-h] [-c COMMENT_STRING] header path [path ...]
+    usage: update-license-header [-h] [-c COMMENT_STRING] header path [path ...]
     positional arguments:
       header
       path
